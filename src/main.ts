@@ -1,9 +1,10 @@
-// @ts-expect-error: Temp
 const cc = DataStudioApp.createCommunityConnector();
 
 const isAdminUser = () => false;
 
-const getConfig = (request: any) => {
+const getConfig = (request: GetConfigRequest): GetConfigResponse => {
+    console.log(request);
+
     const config = cc.getConfig();
 
     config
@@ -58,9 +59,11 @@ const getFields = () => {
     return fields;
 };
 
-const getSchema = (request: any) => ({ schema: getFields().build() });
+const getSchema = (request: GetSchemaRequest): GetSchemaResponse => ({
+    schema: getFields().build(),
+});
 
-const getData = (request: any) => {
+const getData = (request: GetDataRequest): GetDataResponse => {
     UrlFetchApp.fetch('https://google.com');
 
     const requestedFields = getFields().forIds(
