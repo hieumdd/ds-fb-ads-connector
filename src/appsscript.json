@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "OAuth2",
+        "libraryId": "1B7FSrk5Zi6L1rSxxTDgDEUsPzlukDsi4KGuTMorsTQHhGBzBkMun4iDF",
+        "version": "33"
+      }
+    ]
+  },
+  "dataStudio": {
+    "name": "ds-fb-ads-connector",
+    "logoUrl": "logoUrl",
+    "company": "manifestCompany",
+    "companyUrl": "companyUrl",
+    "addonUrl": "addonUrl",
+    "supportUrl": "supportUrl",
+    "description": "description",
+    "sources": [
+      ""
+    ]
+  }
+}
