@@ -22,7 +22,7 @@ const getConfig = (request: GetConfigRequest): GetConfigResponse => {
         config
             .newSelectMultiple()
             .setId('metrics')
-            .setName('Metrics'),
+            .setName('metrics'),
     );
 
     config.setDateRangeRequired(true);
@@ -83,8 +83,14 @@ const getData = (request: GetDataRequest<FacebookConfig>): GetDataResponse => {
         }),
     );
 
-    console.log(accountId, startDate, endDate, fields);
-    console.log(JSON.stringify(requestedFields.build()));
+    console.log(
+        getInsights({
+            accountId,
+            startDate,
+            endDate,
+            fields: fields.map(({ name }) => name),
+        }),
+    );
     // UrlFetchApp.fetch('https://google.com');
 
     // const requestedFields = 0;
