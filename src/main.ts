@@ -90,8 +90,6 @@ const getData = (request: GetDataRequest<FacebookConfig>): GetDataResponse => {
         fields: fields.map(({ name }) => name),
     });
 
-    console.log(data);
-
     const rows = data.map((p) => ({
         values: requestedFields
             .asArray()

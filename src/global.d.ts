@@ -15,7 +15,7 @@ type GetConfigResponse = object;
 type ConfigParams = {
     [configId: string]: string;
 };
-interface GetDataRequest<T> {
+type GetDataRequest<T> = {
     configParams: T;
     scriptParams: {
         sampleExtraction: boolean;
@@ -28,46 +28,45 @@ interface GetDataRequest<T> {
     fields: Array<{
         name: string;
     }>;
-}
+};
 
 type GetDataRowValue = string | number | boolean;
-interface GetDataRow {
+type GetDataRow = {
     values: Array<GetDataRowValue>;
-}
+};
 type GetDataRows = Array<GetDataRow>;
 
-interface GetDataResponse {
+type GetDataResponse = {
     schema: object[];
     rows: GetDataRows;
-}
+};
 
-// setCredentials
-interface UserPassCredentials {
+type UserPassCredentials = {
     userPass: {
         username: string;
         password: string;
     };
-}
+};
 
-interface UserTokenCredentials {
+type UserTokenCredentials = {
     userToken: {
         username: string;
         token: string;
     };
-}
+};
 
-interface KeyCredentials {
+type KeyCredentials = {
     key: string;
-}
+};
 
 type SetCredentialsRequest =
     | UserPassCredentials
     | UserTokenCredentials
     | KeyCredentials;
 
-interface SetCredentialsResponse {
+type SetCredentialsResponse = {
     errorCode: 'NONE' | 'INVALID_CREDENTIALS';
-}
+};
 
 type Field = {
     name: string;
