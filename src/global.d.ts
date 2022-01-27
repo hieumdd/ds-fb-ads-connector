@@ -1,30 +1,22 @@
-// TODO - all of the `Object` types could probably be better specified in the
-// future, but since that's what the builder's `.build()` return, this is the
-// best we can do for now.
-
-// getAuthType
 type GetAuthTypeResponse = object;
 
-// getSchema
-interface GetSchemaRequest {
-    configParams: ConfigParams;
-}
-interface GetSchemaResponse {
+type GetSchemaRequest<T> = {
+    configParams: T;
+};
+type GetSchemaResponse = {
     schema: object[];
-}
+};
 
-// getConfig
-interface GetConfigRequest {
+type GetConfigRequest = {
     languageCode: string;
-}
+};
 type GetConfigResponse = object;
 
-// getData
-interface ConfigParams {
+type ConfigParams = {
     [configId: string]: string;
-}
-interface GetDataRequest {
-    configParams?: ConfigParams;
+};
+interface GetDataRequest<T> {
+    configParams: T;
     scriptParams: {
         sampleExtraction: boolean;
         lastRefresh: string;
@@ -76,3 +68,8 @@ type SetCredentialsRequest =
 interface SetCredentialsResponse {
     errorCode: 'NONE' | 'INVALID_CREDENTIALS';
 }
+
+type Field = {
+    name: string;
+    dataType: string;
+};
