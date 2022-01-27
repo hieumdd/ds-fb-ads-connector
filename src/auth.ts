@@ -1,10 +1,4 @@
-// @ts-expect-error: Temp
-const cc = DataStudioApp.createCommunityConnector();
-
 const SERVICE_NAME = 'fb-ads-connector';
-const API_VER = 'v12.0';
-const AUTHORIZATION_BASE_URL = `https://www.facebook.com/${API_VER}/dialog/oauth`;
-const TOKEN_URL = `https://graph.facebook.com/${API_VER}/oauth/access_token`;
 
 const getAuthType = () =>
     cc
@@ -14,14 +8,12 @@ const getAuthType = () =>
 
 const get3PAuthorizationUrls = () => getOAuthService().getAuthorizationUrl();
 
-const authCallback = (request: any) =>
+const authCallback = (request: object) =>
     getOAuthService().handleCallback(request)
-        ? HtmlService.createHtmlOutput('Success! You can close this tab.')
+        ? HtmlService.createHtmlOutput(getOAuthService().getAccessToken())
         : HtmlService.createHtmlOutput('Denied. You can close this tab');
 
 const isAuthValid = () => getOAuthService().hasAccess();
-
-const resetAuth = () => getOAuthService().reset();
 
 const getOAuthService = () => {
     const scriptProps = PropertiesService.getScriptProperties();
@@ -34,3 +26,9 @@ const getOAuthService = () => {
         .setPropertyStore(PropertiesService.getUserProperties())
         .setCallbackFunction('authCallback');
 };
+
+function resetAuth() {
+    getOAuthService().reset();
+}
+
+const logout = () => getOAuthService().reset();

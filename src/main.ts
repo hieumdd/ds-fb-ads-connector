@@ -1,97 +1,102 @@
-// @ts-expect-error: Temp
 const cc = DataStudioApp.createCommunityConnector();
 
-const isAdminUser = () => false;
+const isAdminUser = () => true;
 
-const getConfig = (request: any) => {
+const getConfig = (request: GetConfigRequest): GetConfigResponse => {
     const config = cc.getConfig();
 
     config
-        .newInfo()
-        .setId('generalInfo')
-        .setText(
-            'This is the template connector created by https://github.com/googledatastudio/dscc-gen',
-        );
+        .newTextInput()
+        .setId('accountId')
+        .setName('Facebook Ads Account ID');
 
-    config
-        .newSelectSingle()
-        .setId('units')
-        .setName('Units')
-        .setHelpText('Metric or Imperial Units')
-        .setAllowOverride(true)
-        .addOption(
-            config
-                .newOptionBuilder()
-                .setLabel('Metric')
-                .setValue('metric'),
-        )
-        .addOption(
-            config
-                .newOptionBuilder()
-                .setLabel('Imperial')
-                .setValue('imperial'),
-        );
+    metrics.reduce(
+        (acc, cur) =>
+            acc.addOption(
+                config
+                    .newOptionBuilder()
+                    .setLabel(cur)
+                    .setValue(cur),
+            ),
+        config
+            .newSelectMultiple()
+            .setId('metrics')
+            .setName('Metrics'),
+    );
 
     config.setDateRangeRequired(true);
 
     return config.build();
 };
 
-const getFields = () => {
+const getFields = (dimensions: string[], metrics: string[]) => {
     const fields = cc.getFields();
     const types = cc.FieldType;
     const aggregations = cc.AggregationType;
 
-    fields
-        .newDimension()
-        .setId('id')
-        .setName('Id')
-        .setType(types.TEXT);
+    dimensions.forEach((key) =>
+        fields
+            .newDimension()
+            .setId(key)
+            .setName(key)
+            .setType(types.TEXT),
+    );
 
-    fields
-        .newMetric()
-        .setId('distance')
-        .setName('Distance')
-        .setType(types.NUMBER)
-        .setAggregation(aggregations.SUM);
+    metrics.forEach((key) =>
+        fields
+            .newMetric()
+            .setId(key)
+            .setName(key)
+            .setType(types.NUMBER)
+            .setAggregation(aggregations.SUM),
+    );
 
     return fields;
 };
 
-const getSchema = (request: any) => ({ schema: getFields().build() });
+const getSchema = (
+    request: GetSchemaRequest<FacebookConfig>,
+): GetSchemaResponse => {
+    const {
+        configParams: { metrics },
+    } = request;
 
-const getData = (request: any) => {
-    UrlFetchApp.fetch('https://google.com');
+    return {
+        schema: getFields(dimensions, metrics.split(',')).build(),
+    };
+};
 
-    const requestedFields = getFields().forIds(
-        request.fields.map(function(field: any) {
+const getData = (request: GetDataRequest<FacebookConfig>): GetDataResponse => {
+    const {
+        configParams: { accountId },
+        dateRange: { startDate, endDate },
+        fields,
+    } = request;
+
+    const requestedFields = getFields(
+        dimensions,
+        fields.map(({ name }) => name),
+    ).forIds(
+        request.fields.map((field) => {
             return field.name;
         }),
     );
 
-    let unitMultiplier = 1;
-    if (request.configParams.units === 'metric') {
-        unitMultiplier = 1.60934;
-    }
+    const data = getInsights({
+        accountId,
+        startDate,
+        endDate,
+        fields: fields.map(({ name }) => name),
+    });
 
-    const rows = [];
-    for (let i = 0; i < 100; i++) {
-        const row: any[] = [];
-        requestedFields.asArray().forEach(function(field) {
-            switch (field.getId()) {
-                case 'id':
-                    return row.push('id_' + i);
-                case 'distance':
-                    return row.push(i * unitMultiplier);
-                default:
-                    return row.push('');
-            }
-        });
-        rows.push({ values: row });
-    }
+    const rows = data.map((p) => ({
+        values: requestedFields
+            .asArray()
+            .reduce((acc, cur) => [...acc, p[cur.getId()]], []),
+    }));
 
     return {
+        rows,
         schema: requestedFields.build(),
-        rows: rows,
     };
 };

@@ -1,23 +1,23 @@
 {
-  "dependencies": {
-    "libraries": [
-      {
-        "userSymbol": "OAuth2",
-        "libraryId": "1B7FSrk5Zi6L1rSxxTDgDEUsPzlukDsi4KGuTMorsTQHhGBzBkMun4iDF",
-        "version": "33"
-      }
-    ]
-  },
-  "dataStudio": {
-    "name": "ds-fb-ads-connector",
-    "logoUrl": "logoUrl",
-    "company": "manifestCompany",
-    "companyUrl": "companyUrl",
-    "addonUrl": "addonUrl",
-    "supportUrl": "supportUrl",
-    "description": "description",
-    "sources": [
-      ""
-    ]
-  }
+    "exceptionLogging": "STACKDRIVER",
+    "runtimeVersion": "V8",
+    "dependencies": {
+        "libraries": [
+            {
+                "userSymbol": "OAuth2",
+                "libraryId": "1B7FSrk5Zi6L1rSxxTDgDEUsPzlukDsi4KGuTMorsTQHhGBzBkMun4iDF",
+                "version": "33"
+            }
+        ]
+    },
+    "dataStudio": {
+        "name": "Facebook Ads Insights Connector",
+        "logoUrl": "https://avatars.githubusercontent.com/u/24801365?s=400&u=d4b99cee05392294e2ff8f44f9ea6b45c9655d55&v=4",
+        "company": "HM",
+        "companyUrl": " https://github.com/hieumdd",
+        "addonUrl": " https://github.com/hieumdd/ds-fb-ads-connector",
+        "supportUrl": " https://github.com/hieumdd/ds-fb-ads-connector",
+        "description": "Lorem ipsum",
+        "sources": [""]
+    }
 }
