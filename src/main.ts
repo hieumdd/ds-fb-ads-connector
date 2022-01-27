@@ -9,7 +9,6 @@ const getConfig = (request: GetConfigRequest): GetConfigResponse => {
         .newTextInput()
         .setId('accountId')
         .setName('Facebook Ads Account ID')
-        .setPlaceholder('00000000000');
 
     metrics.reduce(
         (acc, cur) =>
@@ -22,7 +21,7 @@ const getConfig = (request: GetConfigRequest): GetConfigResponse => {
         config
             .newSelectMultiple()
             .setId('metrics')
-            .setName('metrics'),
+            .setName('Metrics'),
     );
 
     config.setDateRangeRequired(true);
