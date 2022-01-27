@@ -8,7 +8,7 @@ const getConfig = (request: GetConfigRequest): GetConfigResponse => {
     config
         .newTextInput()
         .setId('accountId')
-        .setName('Facebook Ads Account ID')
+        .setName('Facebook Ads Account ID');
 
     metrics.reduce(
         (acc, cur) =>
