@@ -14,8 +14,12 @@ type InsightsOptions = {
     endDate: string;
 };
 
+type FacebookData = {
+    [key: string]: string | number;
+};
+
 type FacebookInsightsRes = {
-    data: object[];
+    data: FacebookData[];
     paging: {
         cursors: {
             before: string;
@@ -27,15 +31,15 @@ type FacebookInsightsRes = {
 
 const dimensions = [
     'date_start',
-    'campaign_id',
-    'adset_id',
-    'ad_id',
-    'campaign_name',
-    'adset_name',
-    'ad_name',
+    // 'campaign_id',
+    // 'adset_id',
+    // 'ad_id',
+    // 'campaign_name',
+    // 'adset_name',
+    // 'ad_name',
 ];
 
-const metrics = ['clicks', 'spend', 'impressions', 'actions'];
+const metrics = ['clicks', 'spend', 'impressions'];
 
 const queryString = (key: string, value: string | number) => `${key}=${value}`;
 
@@ -62,7 +66,10 @@ const buildInsightsURL = (options: InsightsOptions, after?: string) => {
     );
 };
 
-const getInsights = (options: InsightsOptions, _after?: string): object[] => {
+const getInsights = (
+    options: InsightsOptions,
+    _after?: string,
+): FacebookData[] => {
     const res = <FacebookInsightsRes>(
         JSON.parse(
             UrlFetchApp.fetch(

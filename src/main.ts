@@ -83,41 +83,23 @@ const getData = (request: GetDataRequest<FacebookConfig>): GetDataResponse => {
         }),
     );
 
-    console.log(
-        getInsights({
-            accountId,
-            startDate,
-            endDate,
-            fields: fields.map(({ name }) => name),
-        }),
-    );
-    // UrlFetchApp.fetch('https://google.com');
+    const data = getInsights({
+        accountId,
+        startDate,
+        endDate,
+        fields: fields.map(({ name }) => name),
+    });
 
-    // const requestedFields = 0;
+    console.log(data);
 
-    // let unitMultiplier = 1;
-    // if (request.configParams.units === 'metric') {
-    //     unitMultiplier = 1.60934;
-    // }
-
-    // const rows = [];
-    // for (let i = 0; i < 100; i++) {
-    //     const row: any[] = [];
-    //     requestedFields.asArray().forEach(function(field) {
-    //         switch (field.getId()) {
-    //             case 'id':
-    //                 return row.push('id_' + i);
-    //             case 'distance':
-    //                 return row.push(i * unitMultiplier);
-    //             default:
-    //                 return row.push('');
-    //         }
-    //     });
-    //     rows.push({ values: row });
-    // }
+    const rows = data.map((p) => ({
+        values: requestedFields
+            .asArray()
+            .reduce((acc, cur) => [...acc, p[cur.getId()]], []),
+    }));
 
     return {
+        rows,
         schema: requestedFields.build(),
-        rows: [],
     };
 };
